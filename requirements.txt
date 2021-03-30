@@ -1,0 +1,7 @@
+streamlit
+geojson
+geopandas
+pandas
+bokeh==2.2.3
+pandas-bokeh
+streamlit-lottie
