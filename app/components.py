@@ -21,7 +21,7 @@ import SessionState
 FILETYPES = ["geojson", "json", "kml", "wkt", "zip"]
 FILETYPES_SHAPEFILE = ["shp", "shx", "dbf", "prj"]
 VALIDATION_OPTIONS = [
-    "No Self-intersection",
+    "No Self-Intersection",
     "No Holes",
     "Counterclockwise",
 ]
@@ -114,42 +114,30 @@ def overview(df: GeoDataFrame) -> None:
     st.write("")
 
 
-def validation(aoi: Vector) -> None:
+def validation(vector: Vector, selected_validations: List[str]) -> None:
     """
     Validation elements.
+
+    Args:
+        vector: The evaluated vector validation object.
+        selected_validations: The list of options to valindate selected by the user.
     """
     symbol = ["🟥", "✅"]
     st.write("")
     (
-        # col1,
-        # col2,
-        # col3,
-        col4,
-        col5,
-        col6,
+        col1,
+        col2,
+        col3,
     ) = st.beta_columns(3)
-    # col1.markdown(f"{symbol[aoi.is_single_feature]} **Single feature**")
-    # col2.markdown(f"{symbol[aoi.is_polygon]} **Is Polygon**")
-    # col3.markdown(f"{symbol[aoi.is_4326]} **Is 4326**")
-    col4.markdown(f"{symbol[aoi.is_no_selfintersection]} **No Self-intersection**")
-    col5.markdown(f"{symbol[aoi.is_no_holes]} **No Holes**")
-    col6.markdown(f"{symbol[aoi.is_ccw]} **Counterclockwise**")
+    col1.markdown(f"{symbol[vector.is_no_selfintersection]} **No Self-Intersection**")
+    col2.markdown(f"{symbol[vector.is_no_holes]} **No Holes**")
+    col3.markdown(f"{symbol[vector.is_ccw]} **Counterclockwise**")
 
-    if aoi.all_valid:
+    if vector.valid_all:
         st.success("**VALID!**")
-    elif not aoi.fixable_valid:
+    elif not vector.valid_by_citeria:
         st.warning("**INVALID - FIXING AUTOMATICALLY ...**")
-    # else:
-    #     if not aoi.is_single_feature:
-    #         st.error("**INVALID - FIX MANUALLY!** Use only a single Feature.")
-    #     if not aoi.is_polygon:
-    #         geom_types = aoi.df.geometry.geom_type.value_counts().to_dict()
-    #         st.error(
-    #             f"**INVALID - FIX MANUALLY!** Use only a Polygon Geometry. Data is {geom_types}."
-    #         )
-    #     elif not aoi.is_single_ring and aoi.is_no_holes:
-    #         st.error(f"**INVALID - FIX MANUALLY!** The Polygon has multiple rings.")
-    elif not aoi.is_single_ring and aoi.is_no_holes:
+    elif not vector.is_single_ring and vector.is_no_holes:
         st.error(f"**INVALID - FIX MANUALLY!** The Polygon has multiple rings.")
 
 
@@ -174,12 +162,9 @@ def fix(vector: Vector) -> Vector:
     """
     Controls the vector fix elements.
     """
-    # if not aoi.is_4326:
-    #     aoi.df = aoi.df.to_crs(epsg=4326)
-    #     st.info("Adjusted to crs 4326...")
     if not vector.is_no_selfintersection:
         vector.df.geometry = vector.df.geometry.apply(lambda x: x.buffer(0))
-        st.info("Removing self-intersections by applying buffer(0)...")
+        st.info("Removing Self-Intersections by applying buffer(0)...")
     if not vector.is_no_holes:
         vector.df.geometry = vector.df.geometry.apply(lambda x: utils.close_holes(x))
         st.info("Closing holes in geometry...")
@@ -187,6 +172,6 @@ def fix(vector: Vector) -> Vector:
         vector.df.geometry = vector.df.geometry.apply(
             lambda x: orient(x) if x.geom_type == "Polygon" else x
         )
-        st.info("Applying right-hand rule winding ...")
+        st.info("Applying right-hand/ccw rule winding ...")
 
     return vector

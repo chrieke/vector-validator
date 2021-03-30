@@ -7,63 +7,42 @@ class Vector:
     """
     Class handling the checks and geometry validation.
     """
+
     def __init__(
         self,
         df: GeoDataFrame,
         fixable_valid=None,
         all_valid=None,
-        is_single_feature=None,
-        is_polygon=None,
         is_single_ring=None,
-        is_4326=None,
         is_no_selfintersection=None,
         is_no_holes=None,
         is_ccw=None,
     ):
         self.df = df
-        self.fixable_valid = False
-        self.all_valid = False
-        self.is_single_feature = False
-        self.is_polygon = False
+        self.valid_by_citeria = False
+        self.valid_all = False
         self.is_single_ring = False
-        self.is_4326 = False
         self.is_no_selfintersection = False
         self.is_no_holes = False
         self.is_ccw = False
 
-    def run_validity_checks(self, valiation_selection: List[str]) -> None:
+    def run_validation_checks(self, selected_validations: List[str]) -> None:
         """
-        Checks all validity conditions, sets self.fixable_valid and self.all_valid.
+        Checks all validity conditions.
         """
-        if "Single Feature" in valiation_selection:
-            self.check_is_single_feature()
-        if "Is Polygon" in valiation_selection:
-            self.check_is_polygon()
-        if "Is 4326" in valiation_selection:
-            self.check_is_4326()
-        if "No Holes" in valiation_selection:
-            self.check_is_single_ring()
-            self.check_is_no_holes()
-        if "No Self-intersection" in valiation_selection:
-            self.check_is_no_selfintersection()
-        if "Counterclockwise" in valiation_selection:
-            self.check_is_ccw()
+        self.check_is_no_selfintersection()
+        self.check_is_single_ring()
+        self.check_is_no_holes()
+        self.check_is_ccw()
 
-        self.fixable_valid = False
-        self.all_valid = False
-
+        self.valid_all = False
         if all([self.is_no_selfintersection, self.is_no_holes, self.is_ccw]):
-            self.fixable_valid = True
+            self.valid_all = True
 
-        if self.fixable_valid:
-            #         and all(
-            #     [
-            #         self.is_single_feature,
-            #         self.is_polygon,
-            #         self.is_single_ring,
-            #     ]
-            # ):
-            self.all_valid = True
+        self.valid_by_citeria = False
+        # if "No Self-Intersection" in selected_validations and self.is_no_selfintersection
+
+    # todo
 
     def check_is_single_feature(self) -> None:
         self.is_single_feature = self.df.shape[0] == 1

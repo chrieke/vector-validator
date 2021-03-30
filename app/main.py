@@ -30,15 +30,15 @@ if df is None:
 components.overview(df)
 
 vector = Vector(df)
-vector.run_validity_checks(selected_validations)
+vector.run_validation_checks(selected_validations)
 components.validation(vector)
 
-if not vector.fixable_valid:
+if not vector.valid_by_citeria:
     vector = components.fix(vector)
     st.markdown("---")
-    vector.run_validity_checks()
+    vector.run_validation_checks()
     components.validation(vector)
 
-if vector.all_valid:
+if vector.valid_all:
     st.markdown("---")
     components.results(vector)
