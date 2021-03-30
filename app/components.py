@@ -2,7 +2,7 @@
 Contains the visual elements of the app.
 """
 
-from typing import List
+from typing import List, Union
 import json
 
 import geojson
@@ -14,7 +14,7 @@ import pandas_bokeh
 pandas_bokeh.output_notebook()
 
 import utils
-from validation import Validation
+from validation import Vector
 import SessionState
 
 
@@ -39,13 +39,13 @@ def config() -> List[str]:
     if col2.button("Reset"):
         session.run_id += 1
 
-    valiation_selection = col1.multiselect(
+    selected_validations = col1.multiselect(
         "", VALIDATION_OPTIONS, default=VALIDATION_OPTIONS, key=session.run_id
     )
-    return valiation_selection
+    return selected_validations
 
 
-def input():
+def input() -> Union[GeoDataFrame, None]:
     """
     The data input elements - text input, file upload and the examples.
     """
@@ -92,7 +92,7 @@ def input():
     return df
 
 
-def overview(df: GeoDataFrame):
+def overview(df: GeoDataFrame) -> None:
     """
     Data overview visualization elements - properties and map
     """
@@ -111,7 +111,7 @@ def overview(df: GeoDataFrame):
     st.write("")
 
 
-def validation(aoi: Validation):
+def validation(aoi: Vector) -> None:
     """
     Validation elements.
     """
@@ -150,7 +150,7 @@ def validation(aoi: Validation):
         st.error(f"**INVALID - FIX MANUALLY!** The Polygon has multiple rings.")
 
 
-def results(aoi: Validation):
+def results(aoi: Vector) -> None:
     """
     Controls the results elements.
     """
@@ -167,23 +167,23 @@ def results(aoi: Validation):
     expander_result.write(download_geojson)
 
 
-def fix(aoi: Validation) -> Validation:
+def fix(vector: Vector) -> Vector:
     """
     Controls the vector fix elements.
     """
     # if not aoi.is_4326:
     #     aoi.df = aoi.df.to_crs(epsg=4326)
     #     st.info("Adjusted to crs 4326...")
-    if not aoi.is_no_selfintersection:
-        aoi.df.geometry = aoi.df.geometry.apply(lambda x: x.buffer(0))
+    if not vector.is_no_selfintersection:
+        vector.df.geometry = vector.df.geometry.apply(lambda x: x.buffer(0))
         st.info("Removing self-intersections by applying buffer(0)...")
-    if not aoi.is_no_holes:
-        aoi.df.geometry = aoi.df.geometry.apply(lambda x: utils.close_holes(x))
+    if not vector.is_no_holes:
+        vector.df.geometry = vector.df.geometry.apply(lambda x: utils.close_holes(x))
         st.info("Closing holes in geometry...")
-    if not aoi.is_ccw:
-        aoi.df.geometry = aoi.df.geometry.apply(
+    if not vector.is_ccw:
+        vector.df.geometry = vector.df.geometry.apply(
             lambda x: orient(x) if x.geom_type == "Polygon" else x
         )
         st.info("Applying right-hand rule winding ...")
 
-    return aoi
+    return vector

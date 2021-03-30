@@ -3,7 +3,7 @@ from streamlit_lottie import st_lottie
 
 import components
 import utils
-from vector import Vector
+from validation import Vector
 
 st.set_page_config(layout="centered", initial_sidebar_state="collapsed")
 
@@ -18,7 +18,7 @@ col2_header.write("")
 col2_header.title(f"Vector Validator")
 st.markdown("**Validates and automatically fixes your geospatial vector data.**")
 
-valiation_selection = components.config()
+selected_validations = components.config()
 st.write("")
 st.write("")
 
@@ -29,16 +29,16 @@ if df is None:
 
 components.overview(df)
 
-aoi = Vector(df)
-aoi.run_validity_checks(valiation_selection)
-components.validation(aoi)
+vector = Vector(df)
+vector.run_validity_checks(selected_validations)
+components.validation(vector)
 
-if not aoi.fixable_valid:
-    aoi = components.fix(aoi)
+if not vector.fixable_valid:
+    vector = components.fix(vector)
     st.markdown("---")
-    aoi.run_validity_checks()
-    components.validation(aoi)
+    vector.run_validity_checks()
+    components.validation(vector)
 
-if aoi.all_valid:
+if vector.all_valid:
     st.markdown("---")
-    components.results(aoi)
+    components.results(vector)
