@@ -42,6 +42,9 @@ def config() -> List[str]:
     selected_validations = col1.multiselect(
         "", VALIDATION_OPTIONS, default=VALIDATION_OPTIONS, key=session.run_id
     )
+    if not selected_validations:
+        st.error("Please select at least one option to validate!")
+        st.stop()
     return selected_validations
 
 
