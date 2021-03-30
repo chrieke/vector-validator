@@ -105,7 +105,8 @@ def overview(df: GeoDataFrame):
     st.bokeh_chart(fig)
     with st.beta_expander(f"Show as full GeoJSON - Click to expand"):
         st.write(df.geometry.__geo_interface__)
-    st.markdown("---")
+    st.write("")
+    st.write("")
 
 
 def validation(aoi: Validation):
@@ -157,7 +158,7 @@ def results(aoi: Validation):
     utils.download_button(
         json.dumps(download_geojson),
         "aoi.geojson",
-        "Download as GeoJson",
+        "Download as GeoJSON",
         col1_result,
     )
     expander_result = col2_result.beta_expander("Copy full GeoJSON - Click to expand")

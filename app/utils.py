@@ -25,17 +25,17 @@ def read_vector_file_to_df(uploaded_file: st.uploaded_file_manager.UploadedFile)
     filename = uploaded_file.name
     suffix = Path(filename).suffix
     if suffix == ".kml":
-        st.info("Reading KML file ...")
+        # st.info("Reading KML file ...")
         gpd.io.file.fiona.drvsupport.supported_drivers["KML"] = "rw"
         df = gpd.read_file(uploaded_file, driver="KML")
     elif suffix == ".wkt":
-        st.info("Reading WKT file ...")
+        # st.info("Reading WKT file ...")
         wkt_string = uploaded_file.read().decode("utf-8")
         df = pd.DataFrame({"geometry": [wkt_string]})
         df["geometry"] = df["geometry"].apply(shapely.wkt.loads)
         df = gpd.GeoDataFrame(df, geometry="geometry", crs=4326)
     elif suffix == ".zip":
-        st.info("Reading zipped Shapefile ...")
+        # st.info("Reading zipped Shapefile ...")
         with (ZipMemoryFile(uploaded_file)) as memfile:
             with memfile.open() as src:
                 crs = src.crs
@@ -44,7 +44,7 @@ def read_vector_file_to_df(uploaded_file: st.uploaded_file_manager.UploadedFile)
                     st.error("The provided shapefile has no crs!")
                     st.stop()
     else:
-        st.info("Reading GeoJSON/JSON file ...")
+        # st.info("Reading GeoJSON/JSON file ...")
         df = gpd.read_file(uploaded_file)  # Geojson etc.
 
     return df
@@ -55,10 +55,10 @@ def read_json_string_to_df(json_string: str):
     geom_json = geojson.loads(json_string.replace("'", '"'))
     if isinstance(geom_json, dict):
         if geom_json["type"] == "FeatureCollection":
-            st.info("Reading FeatureCollection ...")
+            # st.info("Reading FeatureCollection ...")
             fc = geom_json
         if geom_json["type"] == "Feature":
-            st.info("Reading Feature ...")
+            # st.info("Reading Feature ...")
             fc = FeatureCollection(features=[geom_json])
         elif geom_json["type"] in [
             "Polygon",
@@ -69,15 +69,15 @@ def read_json_string_to_df(json_string: str):
             "MultiLineString",
             "LinearRing",
         ]:
-            st.info("Reading Geometry ...")
+            # st.info("Reading Geometry ...")
             fc = FeatureCollection([Feature(geometry=geom_json)])
     elif isinstance(geom_json, list):
         if len(geom_json) == 4 and isinstance(geom_json[0], float):
-            st.info("Reading bbox (Polygon) ...")
+            # st.info("Reading bbox (Polygon) ...")
             geometry = mapping(box(*geom_json))
             fc = FeatureCollection([Feature(geometry=geometry)])
         elif isinstance(geom_json[0], list) and isinstance(geom_json[0][0], list):
-            st.info("Reading Coordinates (Polygon)...")
+            # st.info("Reading Coordinates (Polygon)...")
             geometry = {"type": "Polygon", "coordinates": geom_json}
             fc = FeatureCollection([Feature(geometry=geometry)])
     else:
