@@ -13,7 +13,7 @@ import pandas_bokeh
 pandas_bokeh.output_notebook()
 
 import utils
-from aoi import Aoi
+from validation import Validation
 import SessionState
 
 
@@ -108,7 +108,7 @@ def overview(df: GeoDataFrame):
     st.markdown("---")
 
 
-def validation(aoi: Aoi):
+def validation(aoi: Validation):
     """
     Validation elements.
     """
@@ -147,7 +147,7 @@ def validation(aoi: Aoi):
         st.error(f"**INVALID - FIX MANUALLY!** The Polygon has multiple rings.")
 
 
-def results(aoi: Aoi):
+def results(aoi: Validation):
     """
     Controls the results elements.
     """
@@ -164,7 +164,7 @@ def results(aoi: Aoi):
     expander_result.write(download_geojson)
 
 
-def fix(aoi: Aoi) -> Aoi:
+def fix(aoi: Validation) -> Validation:
     """
     Controls the vector fix elements.
     """

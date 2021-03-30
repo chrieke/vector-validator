@@ -3,7 +3,7 @@ from streamlit_lottie import st_lottie
 
 import components
 import utils
-from aoi import Aoi
+from validation import Validation
 
 st.set_page_config(layout="centered", initial_sidebar_state="collapsed")
 
@@ -29,7 +29,7 @@ if df is None:
 
 components.overview(df)
 
-aoi = Aoi(df)
+aoi = Validation(df)
 aoi.run_validity_checks()
 components.validation(aoi)
 

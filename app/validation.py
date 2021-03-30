@@ -1,11 +1,8 @@
-import geopandas as gpd
 from geopandas import GeoDataFrame
 
 
-class Aoi:
-    """
-    Aoi for UP42
-    """
+class Validation:
+    """"""
 
     def __init__(
         self,
