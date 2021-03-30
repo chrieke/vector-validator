@@ -1,19 +1,24 @@
 import base64
 import re
 import uuid
+from typing import Union, Dict
+from pathlib import Path
+
 import requests
 import streamlit as st
 import geojson
 from geojson import Feature, FeatureCollection
-from pathlib import Path
 import geopandas as gpd
+from geopandas import GeoDataFrame
 import pandas as pd
 import shapely
 from shapely.geometry import Polygon, box, mapping
 from fiona.io import ZipMemoryFile
 
 
-def read_vector_file_to_df(uploaded_file: st.uploaded_file_manager.UploadedFile):
+def read_vector_file_to_df(
+    uploaded_file: st.uploaded_file_manager.UploadedFile,
+) -> Union[GeoDataFrame, None]:
     """
 
     Args:
@@ -50,8 +55,7 @@ def read_vector_file_to_df(uploaded_file: st.uploaded_file_manager.UploadedFile)
     return df
 
 
-def read_json_string_to_df(json_string: str):
-    # TODO: URL?
+def read_json_string_to_df(json_string: str) -> GeoDataFrame:
     geom_json = geojson.loads(json_string.replace("'", '"'))
     if isinstance(geom_json, dict):
         if geom_json["type"] == "FeatureCollection":
@@ -109,7 +113,7 @@ def download_button(
     download_filename,
     button_text,
     st_element=None,  # , pickle_it=False
-):
+) -> None:
     """
     Generates a link to download the given object_to_download.
 
@@ -197,7 +201,7 @@ def download_button(
         st.markdown(dl_link, unsafe_allow_html=True)
 
 
-def load_lottieurl(url: str):
+def load_lottieurl(url: str) -> Dict:
     r = requests.get(url)
     if r.status_code != 200:
         return None

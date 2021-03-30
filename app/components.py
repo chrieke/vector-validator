@@ -2,6 +2,7 @@
 Contains the visual elements of the app.
 """
 
+from typing import List
 import json
 
 import geojson
@@ -26,7 +27,7 @@ VALIDATION_OPTIONS = [
 ]
 
 
-def config():
+def config() -> List[str]:
     """
     The selection which elements to validate and fix.
     """
@@ -38,9 +39,10 @@ def config():
     if col2.button("Reset"):
         session.run_id += 1
 
-    col1.multiselect(
+    valiation_selection = col1.multiselect(
         "", VALIDATION_OPTIONS, default=VALIDATION_OPTIONS, key=session.run_id
     )
+    return valiation_selection
 
 
 def input():
