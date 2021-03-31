@@ -18,7 +18,7 @@ col2_header.write("")
 col2_header.title(f"Vector Validator")
 st.markdown("**Validates and automatically fixes your geospatial vector data.**")
 
-selected_validations = components.config()
+validation_criteria = components.config()
 st.write("")
 st.write("")
 
@@ -30,15 +30,15 @@ if df is None:
 components.overview(df)
 
 vector = Vector(df)
-vector.run_validation_checks(selected_validations)
-components.validation(vector)
+vector.run_validation_checks(validation_criteria)
+components.validation(vector, validation_criteria)
 
 if not vector.valid_by_citeria:
-    vector = components.fix(vector)
+    vector = components.fix(vector, validation_criteria)
     st.markdown("---")
-    vector.run_validation_checks()
-    components.validation(vector)
+    vector.run_validation_checks(validation_criteria)
+    components.validation(vector, validation_criteria)
 
-if vector.valid_all:
+if vector.valid_by_citeria:
     st.markdown("---")
     components.results(vector)

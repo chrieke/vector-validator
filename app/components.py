@@ -20,7 +20,7 @@ import SessionState
 
 FILETYPES = ["geojson", "json", "kml", "wkt", "zip"]
 FILETYPES_SHAPEFILE = ["shp", "shx", "dbf", "prj"]
-VALIDATION_OPTIONS = [
+VALIDATION_CRITERIA = [
     "No Self-Intersection",
     "No Holes",
     "Counterclockwise",
@@ -39,13 +39,13 @@ def config() -> List[str]:
     if col2.button("Reset"):
         session.run_id += 1
 
-    selected_validations = col1.multiselect(
-        "", VALIDATION_OPTIONS, default=VALIDATION_OPTIONS, key=session.run_id
+    validation_criteria = col1.multiselect(
+        "", VALIDATION_CRITERIA, default=VALIDATION_CRITERIA, key=session.run_id
     )
-    if not selected_validations:
+    if not validation_criteria:
         st.error("Please select at least one option to validate!")
         st.stop()
-    return selected_validations
+    return validation_criteria
 
 
 def input() -> Union[GeoDataFrame, None]:
@@ -114,13 +114,13 @@ def overview(df: GeoDataFrame) -> None:
     st.write("")
 
 
-def validation(vector: Vector, selected_validations: List[str]) -> None:
+def validation(vector: Vector, validation_criteria: List[str]) -> None:
     """
     Validation elements.
 
     Args:
         vector: The evaluated vector validation object.
-        selected_validations: The list of options to valindate selected by the user.
+        selected_validations: The list of options to validate selected by the user.
     """
     symbol = ["🟥", "✅"]
     st.write("")
@@ -129,16 +129,22 @@ def validation(vector: Vector, selected_validations: List[str]) -> None:
         col2,
         col3,
     ) = st.beta_columns(3)
-    col1.markdown(f"{symbol[vector.is_no_selfintersection]} **No Self-Intersection**")
-    col2.markdown(f"{symbol[vector.is_no_holes]} **No Holes**")
-    col3.markdown(f"{symbol[vector.is_ccw]} **Counterclockwise**")
 
-    if vector.valid_all:
+    if "No Self-Intersection" in validation_criteria:
+        col1.markdown(
+            f"{symbol[vector.is_no_selfintersection]} **No Self-Intersection**"
+        )
+    if "No Holes" in validation_criteria:
+        col2.markdown(f"{symbol[vector.is_no_holes]} **No Holes**")
+    if "Counterclockwise" in validation_criteria:
+        col3.markdown(f"{symbol[vector.is_ccw]} **Counterclockwise**")
+
+    if vector.valid_by_citeria:
         st.success("**VALID!**")
-    elif not vector.valid_by_citeria:
-        st.warning("**INVALID - FIXING AUTOMATICALLY ...**")
     elif not vector.is_single_ring and vector.is_no_holes:
         st.error(f"**INVALID - FIX MANUALLY!** The Polygon has multiple rings.")
+    else:
+        st.warning("**INVALID - FIXING AUTOMATICALLY ...**")
 
 
 def results(aoi: Vector) -> None:
@@ -158,17 +164,20 @@ def results(aoi: Vector) -> None:
     expander_result.write(download_geojson)
 
 
-def fix(vector: Vector) -> Vector:
+def fix(vector: Vector, validation_criteria: List[str]) -> Vector:
     """
     Controls the vector fix elements.
     """
-    if not vector.is_no_selfintersection:
+    if (
+        "No Self-Intersection" in validation_criteria
+        and not vector.is_no_selfintersection
+    ):
         vector.df.geometry = vector.df.geometry.apply(lambda x: x.buffer(0))
         st.info("Removing Self-Intersections by applying buffer(0)...")
-    if not vector.is_no_holes:
+    if "No Holes" in validation_criteria and not vector.is_no_holes:
         vector.df.geometry = vector.df.geometry.apply(lambda x: utils.close_holes(x))
         st.info("Closing holes in geometry...")
-    if not vector.is_ccw:
+    if "Counterclockwise" in validation_criteria and not vector.is_ccw:
         vector.df.geometry = vector.df.geometry.apply(
             lambda x: orient(x) if x.geom_type == "Polygon" else x
         )

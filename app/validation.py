@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 from geopandas import GeoDataFrame
 
@@ -26,7 +26,9 @@ class Vector:
         self.is_no_holes = False
         self.is_ccw = False
 
-    def run_validation_checks(self, selected_validations: List[str]) -> None:
+    def run_validation_checks(
+        self, validation_criteria: Union[List[str], None]
+    ) -> None:
         """
         Checks all validity conditions.
         """
@@ -39,10 +41,21 @@ class Vector:
         if all([self.is_no_selfintersection, self.is_no_holes, self.is_ccw]):
             self.valid_all = True
 
+        # TODO: Simplify
         self.valid_by_citeria = False
-        # if "No Self-Intersection" in selected_validations and self.is_no_selfintersection
-
-    # todo
+        citeria_count = 0
+        if validation_criteria:
+            if "No Self-Intersection" in validation_criteria:
+                if self.is_no_selfintersection:
+                    citeria_count += 1
+            if "No Holes" in validation_criteria:
+                if self.check_is_no_holes:
+                    citeria_count += 1
+            if "Counterclockwise" in validation_criteria:
+                if self.is_ccw:
+                    citeria_count += 1
+            if citeria_count == len(validation_criteria):
+                self.valid_by_citeria = True
 
     def check_is_single_feature(self) -> None:
         self.is_single_feature = self.df.shape[0] == 1
