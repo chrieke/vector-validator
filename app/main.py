@@ -5,7 +5,7 @@ import components
 import utils
 from validation import Vector
 
-st.set_page_config(layout="centered", initial_sidebar_state="collapsed")
+st.set_page_config(layout="centered", page_icon="🔺", initial_sidebar_state="collapsed")
 
 
 col1_header, col2_header = st.beta_columns([1, 6])
