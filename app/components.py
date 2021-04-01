@@ -32,9 +32,9 @@ def config() -> List[str]:
     The selection which elements to validate and fix.
     """
     col1, col2 = st.beta_columns([6, 1])
-    col2.write("")
-    col2.write("")
 
+    col2.write("")
+    col2.write("")
     session = SessionState.get(run_id=0)
     if col2.button("Reset"):
         session.run_id += 1
@@ -67,21 +67,23 @@ def input() -> Union[GeoDataFrame, None]:
         "Geometry, Coordinates, bbox"
     )
     text_help = f"E.g. from https://geojson.io/"
-    json_string = placeholder_text.text_area(text_instruction, help=text_help)
+    json_string = placeholder_text.text_area(text_instruction, height=102, help=text_help)
 
     # Examples that set text input widget default
-    _, col1_example, col2_example, _ = st.beta_columns([1.4, 1, 1.1, 1.2])
+    _, col1_example, col2_example, _ = st.beta_columns([1.4, 0.93, 1.1, 1.2])
     example_valid = col1_example.button("Valid Example")
     example_invalid = col2_example.button("Invalid Example")
     if example_valid:
         json_string = placeholder_text.text_area(
             text_instruction,
+            height=102,
             value=geojson.load(open("app/test-data/fc_simple_valid.json")),
             help=text_help,
         )
     if example_invalid:
         json_string = placeholder_text.text_area(
             text_instruction,
+            height=102,
             value=geojson.load(open("app/test-data/fc_holes_coordinates.json")),
             help=text_help,
         )

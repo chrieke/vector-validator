@@ -27,7 +27,7 @@ df = components.input()
 if df is None:
     st.stop()
 
-components.overview(df)
+components.exploration(df)
 
 vector = Vector(df)
 vector.run_validation_checks(validation_criteria)
