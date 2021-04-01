@@ -57,7 +57,7 @@ def input() -> Union[GeoDataFrame, None]:
     placeholder_text = col2_input.empty()
 
     filename = placeholder_file.file_uploader(
-        "Upload a file - GeoJSON/JSON, KML, WKT or zipped SHAPEFILE",
+        "Upload a vector file - GeoJSON/JSON, KML, WKT or zipped SHAPEFILE",
         type=FILETYPES,
         help="Zipped SHAPEFILE is a zipfile containing the shp,dbf,prj,shx files",
     )
@@ -72,9 +72,9 @@ def input() -> Union[GeoDataFrame, None]:
     )
 
     # Examples that set text input widget default
-    _, col1_example, col2_example, _ = st.beta_columns([1.4, 0.93, 1.1, 1.2])
-    example_valid = col1_example.button("Valid Example")
-    example_invalid = col2_example.button("Invalid Example")
+    _, col1_example, col2_example, _ = st.beta_columns([1.12, 1.0, 1.1, 1.0])
+    example_valid = col1_example.button("Try valid example")
+    example_invalid = col2_example.button("Try invalid example")
     if example_valid:
         json_string = placeholder_text.text_area(
             text_instruction,
@@ -111,12 +111,13 @@ def exploration(df: GeoDataFrame) -> None:
     col1.markdown(f"** Features:** {df.shape[0]}")
     col1.markdown(f"**Geometries**: {geom_types}")
     col1.markdown(
-        f"**Properties**: {len(properties)} - {properties if len(properties) < 8 else f'{properties[:8]}, ...'}"
+        f"**Properties**: {len(properties)} - {properties if len(properties) < 10 else f'{properties[:10]}, ...'}"
     )
     col1.write("")
-    with col1.beta_expander(f"{str(df.geometry.__geo_interface__)[:87]}"):
+    col1.write("")
+    with col1.beta_expander("Click to expand - see full GeoJSON"):
         st.write(df.geometry.__geo_interface__)
-    col1.write("Click to expand - see full GeoJSON")
+    col1.write("")
 
     fig = df.reset_index().plot_bokeh(
         show_figure=False,
