@@ -97,23 +97,31 @@ def input() -> Union[GeoDataFrame, None]:
     return df
 
 
-def overview(df: GeoDataFrame) -> None:
+def exploration(df: GeoDataFrame) -> None:
     """
     Data overview visualization elements - properties and map
     """
     st.markdown("---")
     properties = [p for p in df.columns if p != "geometry"]
     geom_types = df.geometry.geom_type.value_counts().to_dict()
-    st.markdown(
-        f"** Features:** {df.shape[0]} ｜ **Geometry types**: {geom_types} ｜ **Properties**: {len(properties)}"
+
+    col1, _, col2 = st.beta_columns([2.2, 0.15, 3])
+    col1.markdown(
+        f"** Features:** {df.shape[0]}"
     )
-    st.write("")
-    fig = df.reset_index().plot_bokeh(show_figure=False, figsize=(665, 350))
-    st.bokeh_chart(fig)
-    with st.beta_expander(f"Show as full GeoJSON - Click to expand"):
+    col1.markdown(f"**Geometries**: {geom_types}")
+    col1.markdown(f"**Properties**: {len(properties)} - {properties if len(properties) < 8 else f'{properties[:8]}, ...'}")
+    col1.write("")
+    with col1.beta_expander(f"{str(df.geometry.__geo_interface__)[:87]}"):
         st.write(df.geometry.__geo_interface__)
-    st.write("")
-    st.write("")
+    col1.write("Click to expand - see full GeoJSON")
+
+    fig = df.reset_index().plot_bokeh(show_figure=False, figsize=(400, 250), )
+    fig.xaxis.axis_label = ""
+    fig.yaxis.axis_label = ""
+    col2.bokeh_chart(fig)
+
+    st.write("---")
 
 
 def validation(vector: Vector, validation_criteria: List[str]) -> None:
