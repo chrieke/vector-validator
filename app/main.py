@@ -7,12 +7,13 @@ from validation import Vector
 
 st.set_page_config(layout="centered", page_icon="🔺", initial_sidebar_state="collapsed")
 
-
 col1_header, col2_header = st.beta_columns([1, 6])
 lottie_url = "https://assets10.lottiefiles.com/temp/lf20_YQB3X3.json"
 lottie_json = utils.load_lottieurl(lottie_url)
 with col1_header:
     st_lottie(lottie_json, height=100, speed=1)
+
+st.markdown(utils.GITHUB_ICON, unsafe_allow_html=True)
 
 col2_header.write("")
 col2_header.title(f"Vector Validator")
