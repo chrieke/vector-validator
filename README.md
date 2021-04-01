@@ -1,15 +1,31 @@
 # vector-validator
 
-Validates and automatically fixes your geospatial vector data. 
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/chrieke/vector-validator/main/app/main)
 
-Build with streamlit. [Live >here<](https://share.streamlit.io/chrieke/vector-validator/main/app/main.py).
+Validates and automatically fixes your geospatial vector data. Build with [streamlit](https://streamlit.io/).
 
-Validates and attempts to fix:
+<br>
+
+---
+
+<h3 align="center">
+    🔺 <a href="https://share.streamlit.io/chrieke/vector-validator/main/app/main">Use the vector-validator here!</a> 🔻
+</h3>
+
+---
+
+<p align="center">
+    <a href="https://share.streamlit.io/chrieke/vector-validator/main/app/main"><img src="images/screenshot.png" width=700></a>
+</p>
+
+## Functionality
+
+**Validates and attempts to fix**:
 - No Self-Intersection
 - No Holes
 - Counterclockwise winding
 
-Accepted data formats:
+**Accepted data formats**:
 - File Upload:
     - GeoJSON
     - JSON
