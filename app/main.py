@@ -17,6 +17,10 @@ with col1_header:
 col2_header.write("")
 col2_header.title(f"Vector Validator")
 st.markdown("**Validates and automatically fixes your geospatial vector data.**")
+st.markdown(
+    "Select the validation options, upload/paste your vector data or try one "
+    "of the examples."
+)
 
 validation_criteria = components.config()
 st.write("")
