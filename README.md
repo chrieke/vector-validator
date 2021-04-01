@@ -2,7 +2,8 @@
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/chrieke/vector-validator/main/app/main)
 
-Validates and automatically fixes your geospatial vector data. App build with [Streamlit](https://streamlit.io/).
+Validates and automatically fixes your geospatial vector data. App build with [Streamlit](https://streamlit.io/). 
+Select the validation options, upload/paste your vector data or try one of the examples.
 
 <br>
 
