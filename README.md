@@ -1,6 +1,6 @@
 # vector-validator
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/chrieke/vector-validator/main/app/main)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/chrieke/vector-validator/main/app/main.py)
 
 Validates and automatically fixes your geospatial vector data. App build with [Streamlit](https://streamlit.io/). 
 Select the validation options, upload/paste your vector data or try one of the examples.
@@ -10,13 +10,13 @@ Select the validation options, upload/paste your vector data or try one of the e
 ---
 
 <h3 align="center">
-    🔺 <a href="https://share.streamlit.io/chrieke/vector-validator/main/app/main">Use the vector-validator app here!</a> 🔻
+    🔺 <a href="https://share.streamlit.io/chrieke/vector-validator/main/app/main.py">Use the vector-validator app here!</a> 🔻
 </h3>
 
 ---
 
 <p align="center">
-    <a href="https://share.streamlit.io/chrieke/vector-validator/main/app/main"><img src="images/screenshot.png" width=700></a>
+    <a href="https://share.streamlit.io/chrieke/vector-validator/main/app/main.py"><img src="images/screenshot.png" width=700></a>
 </p>
 
 ## Functionality
