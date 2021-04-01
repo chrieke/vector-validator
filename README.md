@@ -2,7 +2,7 @@
 
 Validates and automatically fixes your geospatial vector data. 
 
-Build with streamlit. [Live >here<](https://share.streamlit.io/chrieke/aoi-validator/main/app/aoi_validator.py).
+Build with streamlit. [Live >here<](https://share.streamlit.io/chrieke/vector-validator/main/app/main.py).
 
 Validates and attempts to fix:
 - No Self-Intersection
