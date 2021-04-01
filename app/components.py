@@ -150,11 +150,11 @@ def validation(vector: Vector, validation_criteria: List[str]) -> None:
         col3.markdown(f"{symbol[vector.is_ccw]} **Counterclockwise**")
 
     if vector.valid_by_citeria:
-        st.success("**VALID!**")
+        st.success("**VALID! Download or copy below.**")
     elif not vector.is_single_ring and vector.is_no_holes:
         st.error(f"**INVALID - FIX MANUALLY!** The Polygon has multiple rings.")
     else:
-        st.warning("**INVALID - FIXING AUTOMATICALLY ...**")
+        st.error("**INVALID - FIXING AUTOMATICALLY ...**")
 
 
 def results(aoi: Vector) -> None:
@@ -191,6 +191,6 @@ def fix(vector: Vector, validation_criteria: List[str]) -> Vector:
         vector.df.geometry = vector.df.geometry.apply(
             lambda x: orient(x) if x.geom_type == "Polygon" else x
         )
-        st.info("Applying right-hand/ccw rule winding ...")
+        st.info("Applying right-hand/ccw winding ...")
 
     return vector
