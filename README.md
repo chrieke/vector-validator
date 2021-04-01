@@ -2,14 +2,14 @@
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/chrieke/vector-validator/main/app/main)
 
-Validates and automatically fixes your geospatial vector data. Build with [streamlit](https://streamlit.io/).
+Validates and automatically fixes your geospatial vector data. App build with [Streamlit](https://streamlit.io/).
 
 <br>
 
 ---
 
 <h3 align="center">
-    🔺 <a href="https://share.streamlit.io/chrieke/vector-validator/main/app/main">Use the vector-validator here!</a> 🔻
+    🔺 <a href="https://share.streamlit.io/chrieke/vector-validator/main/app/main">Use the vector-validator app here!</a> 🔻
 </h3>
 
 ---
@@ -39,3 +39,20 @@ Validates and automatically fixes your geospatial vector data. Build with [strea
     - Coordinates
     - bbox
 
+## Development
+
+**These steps are only required to work on the app.**
+
+Install with:
+
+```bash
+git clone git@github.com:chrieke/vector-validator.git
+cd vector-validator
+pip install -r requirements.txt
+```
+
+And then start the Streamlit preview with:
+
+```bash
+streamlit run app/main.py
+```
