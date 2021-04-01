@@ -67,7 +67,9 @@ def input() -> Union[GeoDataFrame, None]:
         "Geometry, Coordinates, bbox"
     )
     text_help = f"E.g. from https://geojson.io/"
-    json_string = placeholder_text.text_area(text_instruction, height=102, help=text_help)
+    json_string = placeholder_text.text_area(
+        text_instruction, height=102, help=text_help
+    )
 
     # Examples that set text input widget default
     _, col1_example, col2_example, _ = st.beta_columns([1.4, 0.93, 1.1, 1.2])
@@ -106,17 +108,20 @@ def exploration(df: GeoDataFrame) -> None:
     geom_types = df.geometry.geom_type.value_counts().to_dict()
 
     col1, _, col2 = st.beta_columns([2.2, 0.15, 3])
-    col1.markdown(
-        f"** Features:** {df.shape[0]}"
-    )
+    col1.markdown(f"** Features:** {df.shape[0]}")
     col1.markdown(f"**Geometries**: {geom_types}")
-    col1.markdown(f"**Properties**: {len(properties)} - {properties if len(properties) < 8 else f'{properties[:8]}, ...'}")
+    col1.markdown(
+        f"**Properties**: {len(properties)} - {properties if len(properties) < 8 else f'{properties[:8]}, ...'}"
+    )
     col1.write("")
     with col1.beta_expander(f"{str(df.geometry.__geo_interface__)[:87]}"):
         st.write(df.geometry.__geo_interface__)
     col1.write("Click to expand - see full GeoJSON")
 
-    fig = df.reset_index().plot_bokeh(show_figure=False, figsize=(400, 250), )
+    fig = df.reset_index().plot_bokeh(
+        show_figure=False,
+        figsize=(400, 250),
+    )
     fig.xaxis.axis_label = ""
     fig.yaxis.axis_label = ""
     col2.bokeh_chart(fig)
@@ -162,15 +167,15 @@ def results(aoi: Vector) -> None:
     Controls the results elements.
     """
     st.write("")
+    _, col1, col2, _ = st.beta_columns((0.1, 1, 2, 0.1))
     download_geojson = aoi.df.iloc[0].geometry.__geo_interface__
-    col1_result, col2_result = st.beta_columns((1, 2))
     utils.download_button(
         json.dumps(download_geojson),
         "aoi.geojson",
         "Download as GeoJSON",
-        col1_result,
+        col1,
     )
-    expander_result = col2_result.beta_expander("Copy full GeoJSON - Click to expand")
+    expander_result = col2.beta_expander("Click to expand - see full GeoJSON")
     expander_result.write(download_geojson)
 
 
