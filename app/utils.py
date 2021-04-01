@@ -16,7 +16,7 @@ from shapely.geometry import Polygon, box, mapping
 from fiona.io import ZipMemoryFile
 
 
-GITHUB_ICON = (
+GITHUB_RIBBON = (
     '<a href="https://github.com/chrieke/vector-validator" class="github-corner" aria-label="View source '
     'on GitHub"><svg width="70" height="70" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: '
     'absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 '

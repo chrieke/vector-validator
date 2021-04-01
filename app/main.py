@@ -13,7 +13,7 @@ lottie_json = utils.load_lottieurl(lottie_url)
 with col1_header:
     st_lottie(lottie_json, height=100, speed=1)
 
-st.markdown(utils.GITHUB_ICON, unsafe_allow_html=True)
+st.markdown(utils.GITHUB_RIBBON, unsafe_allow_html=True)
 
 col2_header.write("")
 col2_header.title(f"Vector Validator")
