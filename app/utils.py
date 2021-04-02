@@ -66,9 +66,12 @@ def read_vector_file_to_df(
                 if df.crs is None:
                     st.error("The provided shapefile has no crs!")
                     st.stop()
+    elif suffix == ".gpkg":
+        # st.info("Reading GeoPackage file ...")
+        df = gpd.read_file(uploaded_file)
     else:
         # st.info("Reading GeoJSON/JSON file ...")
-        df = gpd.read_file(uploaded_file)  # Geojson etc.
+        df = gpd.read_file(uploaded_file)
 
     return df
 
