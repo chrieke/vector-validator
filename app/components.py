@@ -18,7 +18,7 @@ from validation import Vector
 import SessionState
 
 
-FILETYPES = ["geojson", "json", "kml", "wkt", "zip"]
+FILETYPES = ["geojson", "json", "kml", "wkt", "gpkg", "zip"]
 FILETYPES_SHAPEFILE = ["shp", "shx", "dbf", "prj"]
 VALIDATION_CRITERIA = [
     "No Self-Intersection",
@@ -57,7 +57,7 @@ def input() -> Union[GeoDataFrame, None]:
     placeholder_text = col2_input.empty()
 
     filename = placeholder_file.file_uploader(
-        "Upload a vector file - GeoJSON/JSON, KML, WKT or zipped SHAPEFILE",
+        "Upload a vector file - GeoJSON/JSON, KML, WKT, GeoPackage or zipped SHAPEFILE",
         type=FILETYPES,
         help="Zipped SHAPEFILE is a zipfile containing the shp,dbf,prj,shx files",
     )
