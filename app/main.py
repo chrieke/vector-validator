@@ -13,14 +13,13 @@ lottie_json = utils.load_lottieurl(lottie_url)
 with col1_header:
     st_lottie(lottie_json, height=100, speed=1)
 
-st.markdown(utils.GITHUB_RIBBON, unsafe_allow_html=True)
-
 col2_header.write("")
 col2_header.title(f"Vector Validator")
-st.markdown("**Validates and automatically fixes your geospatial vector data.**")
-st.markdown(
-    "Select the validation options, upload/paste your vector data or try one "
-    "of the examples."
+st.markdown("[![Star](https://img.shields.io/github/stars/chrieke/vector-validator.svg?logo=github&style=social)](https://gitHub.com/chrieke/vector-validator)"
+            "&nbsp&nbsp&nbsp[![Follow](https://img.shields.io/twitter/follow/chrieke?style=social)](https://www.twitter.com/chrieke)")
+st.write("")
+st.markdown("**Validates and automatically fixes your geospatial vector data.** <br> Select the validation options, "
+            "upload/paste your vector data or try one of the examples.", unsafe_allow_html=True
 )
 
 validation_criteria = components.config()
