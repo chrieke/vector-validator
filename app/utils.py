@@ -46,7 +46,7 @@ def read_vector_file_to_df(
         Geopandas dataframe
     """
     filename = uploaded_file.name
-    suffix = Path(filename).suffix
+    suffix = Path(filename).suffix.lower()
     if suffix == ".kml":
         # st.info("Reading KML file ...")
         gpd.io.file.fiona.drvsupport.supported_drivers["KML"] = "rw"
