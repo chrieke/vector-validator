@@ -88,6 +88,7 @@ class Vector:
             self.is_no_holes = True
 
     def check_is_ccw(self) -> None:
+        # TODO: Check interior cw
         if all(
             [
                 row.geometry.exterior.is_ccw
