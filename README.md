@@ -21,15 +21,15 @@ Select the validation options, upload/paste your vector data or try one of the e
 
 ## Functionality
 
-**Validates and attempts to fix**:
+**Validation options**:
 - No Self-Intersection
 - No Holes
-- Counterclockwise winding
+- Counterclockwise winding of exterior rings
 
 **Does NOT check for**:
-- Clock wise winding of interior rings
-- Ordering of GeoJSON Bounding Box coordinates
 - Coordinate Reference System
+- Ordering of GeoJSON Bounding Box coordinates
+- Clock wise winding of interior rings
 - Duplicate members
 - Coordinate precision
 
