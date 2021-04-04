@@ -26,6 +26,13 @@ Select the validation options, upload/paste your vector data or try one of the e
 - No Holes
 - Counterclockwise winding
 
+**Does NOT check for**:
+- Clock wise winding of interior rings
+- Ordering of GeoJSON Bounding Box coordinates
+- Coordinate Reference System
+- Duplicate members
+- Coordinate precision
+
 **Accepted data formats**:
 - File Upload:
     - GeoJSON
