@@ -17,6 +17,7 @@ class Vector:
         is_no_selfintersection=None,
         is_no_holes=None,
         is_ccw=None,
+        is_no_duplicated_vertices=None,
     ):
         self.df = df
         self.valid_by_citeria = False
@@ -25,6 +26,7 @@ class Vector:
         self.is_no_selfintersection = False
         self.is_no_holes = False
         self.is_ccw = False
+        self.is_no_duplicated_vertices = False
 
     def run_validation_checks(
         self, validation_criteria: Union[List[str], None]
@@ -36,9 +38,17 @@ class Vector:
         self.check_is_single_ring()
         self.check_is_no_holes()
         self.check_is_ccw()
+        self.check_is_no_duplicated_vertices()
 
         self.valid_all = False
-        if all([self.is_no_selfintersection, self.is_no_holes, self.is_ccw]):
+        if all(
+            [
+                self.is_no_selfintersection,
+                self.is_no_holes,
+                self.is_ccw,
+                self.is_no_duplicated_vertices,
+            ]
+        ):
             self.valid_all = True
 
         # TODO: Simplify
@@ -53,6 +63,9 @@ class Vector:
                     citeria_count += 1
             if "Counterclockwise" in validation_criteria:
                 if self.is_ccw:
+                    citeria_count += 1
+            if "No Duplicated Vertices" in validation_criteria:
+                if self.is_no_duplicated_vertices:
                     citeria_count += 1
             if citeria_count == len(validation_criteria):
                 self.valid_by_citeria = True
@@ -97,3 +110,12 @@ class Vector:
             ]
         ):
             self.is_ccw = True
+
+    def check_is_no_duplicated_vertices(self) -> None:
+        have_duplicates = []
+        for _, row in self.df.iterrows():
+            # Same first and last coordinate vertices is ignored.
+            coords = list(row.geometry.exterior.coords)[1:-1]
+            have_duplicates.append(len(coords) != len(set(coords)))
+        if not any(have_duplicates):
+            self.is_no_duplicated_vertices = True

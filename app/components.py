@@ -25,6 +25,7 @@ VALIDATION_CRITERIA = [
     "No Holes",
     "Counterclockwise",
 ]
+ADDITIONAL_VALIDATION_CRITERIA = ["No Duplicated Vertices"]
 
 
 def config() -> List[str]:
@@ -40,7 +41,10 @@ def config() -> List[str]:
         session.run_id += 1
 
     validation_criteria = col1.multiselect(
-        "", VALIDATION_CRITERIA, default=VALIDATION_CRITERIA, key=session.run_id
+        "",
+        VALIDATION_CRITERIA + ADDITIONAL_VALIDATION_CRITERIA,
+        default=VALIDATION_CRITERIA,
+        key=session.run_id,
     )
     if not validation_criteria:
         st.error("Please select at least one option to validate!")
@@ -144,7 +148,8 @@ def validation(vector: Vector, validation_criteria: List[str]) -> None:
         col1,
         col2,
         col3,
-    ) = st.beta_columns(3)
+        col4,
+    ) = st.beta_columns(4)
 
     if "No Self-Intersection" in validation_criteria:
         col1.markdown(
@@ -154,7 +159,10 @@ def validation(vector: Vector, validation_criteria: List[str]) -> None:
         col2.markdown(f"{symbol[vector.is_no_holes]} **No Holes**")
     if "Counterclockwise" in validation_criteria:
         col3.markdown(f"{symbol[vector.is_ccw]} **Counterclockwise**")
-
+    if "No Duplicated Vertices" in validation_criteria:
+        col4.markdown(
+            f"{symbol[vector.is_no_duplicated_vertices]} **No Duplicated Vertices**"
+        )
     if vector.valid_by_citeria:
         st.success("**VALID! Download or copy below.**")
     elif not vector.is_single_ring and vector.is_no_holes:
@@ -198,5 +206,11 @@ def fix(vector: Vector, validation_criteria: List[str]) -> Vector:
             lambda x: orient(x) if x.geom_type == "Polygon" else x
         )
         st.info("Applying right-hand/ccw winding ...")
+    if (
+        "No Duplicated Vertices" in validation_criteria
+        and not vector.is_no_duplicated_vertices
+    ):
+        vector.df.geometry = vector.df.geometry.simplify(0)
+        st.info("Removing duplicated vertices ...")
 
     return vector
