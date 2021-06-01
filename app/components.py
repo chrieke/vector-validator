@@ -116,7 +116,7 @@ def exploration(df: GeoDataFrame) -> None:
     col1.write("")
     col1.write("")
     with col1.beta_expander("Click to expand - see full GeoJSON"):
-        st.write(df.geometry.__geo_interface__)
+        st.write(df.__geo_interface__)
     col1.write("")
 
     fig = df.reset_index().plot_bokeh(
@@ -169,7 +169,7 @@ def results(aoi: Vector) -> None:
     """
     st.write("")
     _, col1, col2, _ = st.beta_columns((0.1, 1, 2, 0.1))
-    download_geojson = aoi.df.iloc[0].geometry.__geo_interface__
+    download_geojson = aoi.df.__geo_interface__
     utils.download_button(
         json.dumps(download_geojson),
         "aoi.geojson",
