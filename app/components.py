@@ -198,5 +198,11 @@ def fix(vector: Vector, validation_criteria: List[str]) -> Vector:
             lambda x: orient(x) if x.geom_type == "Polygon" else x
         )
         st.info("Applying right-hand/ccw winding ...")
+    if (
+        "No Duplicated Vertices" in validation_criteria
+        and not vector.is_no_duplicated_vertices
+    ):
+        vector.df.geometry = vector.df.geometry.simplify(0)
+        st.info("Removing duplicated vertices ...")
 
     return vector
