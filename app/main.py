@@ -22,7 +22,7 @@ col2_header.write("")
 col2_header.title(f"Vector Validator")
 st.markdown(
     "[![Star](https://img.shields.io/github/stars/chrieke/vector-validator.svg?logo=github&style=social)](https://gitHub.com/chrieke/vector-validator)"
-    "&nbsp&nbsp&nbsp[![Follow](https://img.shields.io/twitter/follow/chrieke?style=social)](https://www.twitter.com/chrieke)"
+    "[![Follow](https://img.shields.io/twitter/follow/chrieke?style=social)](https://www.twitter.com/chrieke)"
 )
 st.write("")
 st.markdown(
