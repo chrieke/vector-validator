@@ -15,7 +15,6 @@ pandas_bokeh.output_notebook()
 
 import utils
 from validation import Vector
-import SessionState
 
 
 FILETYPES = ["geojson", "json", "kml", "wkt", "zip"]
@@ -36,9 +35,10 @@ def config() -> List[str]:
 
     col2.write("")
     col2.write("")
-    session = SessionState.get(run_id=0)
+    if 'run_id' not in st.session_state:
+        st.session_state['run_id'] = 0
     if col2.button("Reset"):
-        session.run_id += 1
+        st.session_state.run_id += 1
 
     validation_criteria = col1.multiselect(
         "",
