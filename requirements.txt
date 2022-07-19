@@ -2,6 +2,6 @@ streamlit
 geojson
 geopandas
 pandas
-bokeh==2.2.3
+bokeh==2.4.3
 pandas-bokeh
 streamlit-lottie
