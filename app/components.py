@@ -31,7 +31,7 @@ def config() -> List[str]:
     """
     The selection which elements to validate and fix.
     """
-    col1, col2 = st.beta_columns([6, 1])
+    col1, col2 = st.columns([6, 1])
 
     col2.write("")
     col2.write("")
@@ -44,7 +44,7 @@ def config() -> List[str]:
         "",
         VALIDATION_CRITERIA + ADDITIONAL_VALIDATION_CRITERIA,
         default=VALIDATION_CRITERIA,
-        key=session.run_id,
+        key=st.session_state.run_id,
     )
     if not validation_criteria:
         st.error("Please select at least one option to validate!")
@@ -56,7 +56,7 @@ def input() -> Union[GeoDataFrame, None]:
     """
     The data input elements - text input, file upload and the examples.
     """
-    col1_input, col2_input = st.beta_columns([2, 2])
+    col1_input, col2_input = st.columns([2, 2])
     placeholder_file = col1_input.empty()
     placeholder_text = col2_input.empty()
 
@@ -76,7 +76,7 @@ def input() -> Union[GeoDataFrame, None]:
     )
 
     # Examples that set text input widget default
-    _, col1_example, col2_example, _ = st.beta_columns([1.12, 1.0, 1.1, 1.0])
+    _, col1_example, col2_example, _ = st.columns([1.12, 1.0, 1.1, 1.0])
     example_valid = col1_example.button("Try valid example")
     example_invalid = col2_example.button("Try invalid example")
     if example_valid:
@@ -111,7 +111,7 @@ def exploration(df: GeoDataFrame) -> None:
     properties = [p for p in df.columns if p != "geometry"]
     geom_types = df.geometry.geom_type.value_counts().to_dict()
 
-    col1, _, col2 = st.beta_columns([2.2, 0.15, 3])
+    col1, _, col2 = st.columns([2.2, 0.15, 3])
     col1.markdown(f"** Features:** {df.shape[0]}")
     col1.markdown(f"**Geometries**: {geom_types}")
     col1.markdown(
@@ -119,7 +119,7 @@ def exploration(df: GeoDataFrame) -> None:
     )
     col1.write("")
     col1.write("")
-    with col1.beta_expander("Click to expand - see full GeoJSON"):
+    with col1.expander("Click to expand - see full GeoJSON"):
         st.write(df.__geo_interface__)
     col1.write("")
 
@@ -149,7 +149,7 @@ def validation(vector: Vector, validation_criteria: List[str]) -> None:
         col2,
         col3,
         col4,
-    ) = st.beta_columns(4)
+    ) = st.columns(4)
 
     if "No Self-Intersection" in validation_criteria:
         col1.markdown(
@@ -176,7 +176,7 @@ def results(aoi: Vector) -> None:
     Controls the results elements.
     """
     st.write("")
-    _, col1, col2, _ = st.beta_columns((0.1, 1, 2, 0.1))
+    _, col1, col2, _ = st.columns((0.1, 1, 2, 0.1))
     download_geojson = aoi.df.__geo_interface__
     utils.download_button(
         json.dumps(download_geojson),
@@ -184,7 +184,7 @@ def results(aoi: Vector) -> None:
         "Download as GeoJSON",
         col1,
     )
-    expander_result = col2.beta_expander("Click to expand - see full GeoJSON")
+    expander_result = col2.expander("Click to expand - see full GeoJSON")
     expander_result.write(download_geojson)
 
 

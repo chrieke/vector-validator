@@ -12,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-col1_header, col2_header = st.beta_columns([1, 6])
+col1_header, col2_header = st.columns([1, 6])
 lottie_url = "https://assets10.lottiefiles.com/temp/lf20_YQB3X3.json"
 lottie_json = utils.load_lottieurl(lottie_url)
 with col1_header:
